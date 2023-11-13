@@ -25,7 +25,7 @@ class TTT(tk.Tk):
         
         self.my_turn = -1
 
-        self.geometry('500x800')
+        self.geometry('800x800')
 
         self.active = 'GAME ACTIVE'
         self.socket = target_socket
@@ -92,11 +92,11 @@ class TTT(tk.Tk):
         '''
         #vvvvvvvvvvvvvvvvvvv  DO NOT CHANGE  vvvvvvvvvvvvvvvvvvv
         self.status_frame = tk.Frame()
-        self.status_frame.pack(expand=True,anchor='w',padx=20)
+        self.status_frame.pack(expand=True,anchor='w',padx=6)
         
-        self.l_status_bullet = tk.Label(self.status_frame,text='O',font=('Helevetica',25,'bold'),justify='left')
+        self.l_status_bullet = tk.Label(self.status_frame,text='O',font=('Helevetica',15,'bold'),justify='left')
         self.l_status_bullet.pack(side=tk.LEFT,anchor='w')
-        self.l_status = tk.Label(self.status_frame,font=('Helevetica',25,'bold'),justify='left')
+        self.l_status = tk.Label(self.status_frame,font=('Helevetica',15,'bold'),justify='left')
         self.l_status.pack(side=tk.RIGHT,anchor='w')
         #^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
         
@@ -107,9 +107,9 @@ class TTT(tk.Tk):
         '''
         #vvvvvvvvvvvvvvvvvvv  DO NOT CHANGE  vvvvvvvvvvvvvvvvvvv
         self.result_frame = tk.Frame()
-        self.result_frame.pack(expand=True,anchor='w',padx=20)
+        self.result_frame.pack(expand=True,anchor='w',padx=6)
         
-        self.l_result = tk.Label(self.result_frame,font=('Helevetica',25,'bold'),justify='left')
+        self.l_result = tk.Label(self.result_frame,font=('Helevetica',15,'bold'),justify='left')
         self.l_result.pack(side=tk.BOTTOM,anchor='w')
         #^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
         
@@ -122,7 +122,7 @@ class TTT(tk.Tk):
         self.debug_frame = tk.Frame()
         self.debug_frame.pack(expand=True)
         
-        self.t_debug = tk.Text(self.debug_frame,height=2,width=50)
+        self.t_debug = tk.Text(self.debug_frame,height=2,width=16)
         self.t_debug.pack(side=tk.LEFT)
         self.b_debug = tk.Button(self.debug_frame,text="Send",command=self.send_debug)
         self.b_debug.pack(side=tk.RIGHT)
@@ -146,7 +146,7 @@ class TTT(tk.Tk):
             self.setText[i] = tk.StringVar()
             self.setText[i].set("  ")
             self.cell[i] = tk.Label(self.board_frame, highlightthickness=1,borderwidth=5,relief='solid',
-                                    width=5, height=3,
+                                    width=2, height=2,
                                     bg=self.board_bg,compound="center",
                                     textvariable=self.setText[i],font=('Helevetica',30,'bold'))
             self.cell[i].bind('<Button-1>',
