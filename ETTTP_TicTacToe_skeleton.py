@@ -33,8 +33,14 @@ class TTT(tk.Tk):
         self.send_ip = dst_addr
         self.recv_ip = src_addr
         
-        self.total_cells = 9
-        self.line_size = 3
+        self.total_cells = 25
+        self.line_size = 5
+
+        #     ((0,1,2,3,4),(5,6,7,8,9),(10,11,12,13,14),(15,16,17,18,19),(20,21,22,23,24),
+        # (0,5,10,15,20),(1,6,11,16,21),(2,7,12,17,22),(3,8,13,18,23),(4,9,14,19,24),
+        #  (0,6,12,18,24),(4,8,12,16,20))
+
+
         
         
         # Set variables for Client and Server UI
@@ -57,9 +63,9 @@ class TTT(tk.Tk):
 
             
         self.board_bg = 'white'
-        self.all_lines = ((0, 1, 2), (3, 4, 5), (6, 7, 8),
-                          (0, 3, 6), (1, 4, 7), (2, 5, 8),
-                          (0, 4, 8), (2, 4, 6))
+        self.all_lines = ((0,1,2,3,4),(5,6,7,8,9),(10,11,12,13,14),(15,16,17,18,19),(20,21,22,23,24),
+        (0,5,10,15,20),(1,6,11,16,21),(2,7,12,17,22),(3,8,13,18,23),(4,9,14,19,24),
+         (0,6,12,18,24),(4,8,12,16,20))
 
         self.create_control_frame()
 
@@ -262,7 +268,7 @@ class TTT(tk.Tk):
         else:  # If message is valid - send ack, update board and change turn
             row = int(dic['New-Move'][1])
             col = int(dic['New-Move'][3])
-            loc = row * 3 + col
+            loc = row * 5 + col
             ack_msg = "ACK ETTTP/1.0\r\nHost:" + str(self.send_ip) + "\r\nNew-Move:(" + str(row) + "," + str(col) + ")\r\n\r\n"
             self.socket.send(ack_msg.encode());
 
@@ -300,7 +306,7 @@ class TTT(tk.Tk):
             dic = self.create_dictionary(d_msg)
             row = int(dic['New-Move'][1])
             col = int(dic['New-Move'][3])
-            loc = row * 3 + col
+            loc = row * 5 + col
 
             if self.board[loc] != 0 :
                 self.quit()
@@ -336,7 +342,7 @@ class TTT(tk.Tk):
         Function to send message to peer using button click
         selection indicates the selected button
         '''
-        row, col = divmod(selection, 3)
+        row, col = divmod(selection, 5)
         ###################  Fill Out  #######################
 
         #row, col 값 메시지에 넣어서 보내기 + host 에 send_ip 넣어서 보내기
