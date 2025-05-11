@@ -55,6 +55,9 @@ if __name__ == '__main__':
         # Start game
         root = TTT(target_socket=client_socket, src_addr=MY_IP,dst_addr=SERVER_IP)
         root.play(start_user=start)
+        root.create_chat_frame()
+        _thread.start_new_thread(root.receive_messages, ())
+        #
         root.mainloop()
         client_socket.close()
         
