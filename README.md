@@ -1,5 +1,13 @@
 # ETTTP
+This is 5*5 tic-tac-toe game w/ chatting board~!
 
+~ENJOY~
+
+2025.05.11 troubleshooting : 
+1. both ready(hold)...
+2. only one side chatting
+
+![img.png](img.png)
 ## Project Goal: Online Tic-Tac-Toe game
 
 ▫ Socket: Client – Server (TCP connection)
