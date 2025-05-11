@@ -3,10 +3,16 @@ This is 5*5 tic-tac-toe game w/ chatting board~!
 
 ~ENJOY~
 
+
 2025.05.11 troubleshooting : 
 1. both ready(hold)...
 2. only one side chatting
 
+### HOW TO RUN GAME
+1. python ETTTP_Server_skeletion.py
+2. python ETTTP_Client_skeleton.py
+
+## Preview..
 ![img.png](img.png)
 ## Project Goal: Online Tic-Tac-Toe game
 
