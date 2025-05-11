@@ -58,6 +58,9 @@ if __name__ == '__main__':
 
         root = TTT(client=False,target_socket=client_socket, src_addr=MY_IP,dst_addr=client_addr[0])
         root.play(start_user=start)
+
+        root.create_chat_frame()
+        _thread.start_new_thread(root.receive_messages, ())
         root.mainloop()
         
         client_socket.close()

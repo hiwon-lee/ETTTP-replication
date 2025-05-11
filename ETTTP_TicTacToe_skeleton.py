@@ -69,6 +69,60 @@ class TTT(tk.Tk):
 
         self.create_control_frame()
 
+    # 채팅 UI
+    def create_chat_frame(self):
+        self.chat_frame = tk.Frame()
+        self.chat_frame.pack(expand=True, fill='x')
+
+        self.chat_display = tk.Text(self.chat_frame, height=10, state='disabled')
+        self.chat_display.pack(side=tk.TOP, fill='both', expand=True)
+
+        self.chat_entry = tk.Entry(self.chat_frame)
+        self.chat_entry.pack(side=tk.LEFT, fill='x', expand=True)
+
+        self.chat_send_btn = tk.Button(self.chat_frame, text="Send", command=self.send_chat)
+        self.chat_send_btn.pack(side=tk.RIGHT)
+
+    # 채팅 메시지 전송
+    def send_chat(self):
+        msg = self.chat_entry.get().strip()
+        if not msg:
+            return
+        self.chat_entry.delete(0, 'end')
+
+        send_msg = f"CHAT ETTTP/1.0\r\nHost:{self.send_ip}\r\nMessage:{msg}\r\n\r\n"
+        self.socket.send(send_msg.encode())
+        self.display_chat(f"ME: {msg}")
+
+    # 채팅 메시지 출력
+    def display_chat(self, text):
+        self.chat_display.config(state='normal')
+        self.chat_display.insert(tk.END, text + "\n")
+        self.chat_display.config(state='disabled')
+        self.chat_display.see(tk.END)
+
+    # 메시지 수신 (게임 메시지 + 채팅 구분)
+    def receive_messages(self):
+        while True:
+            try:
+                msg = self.socket.recv(SIZE).decode()
+                if msg.startswith("CHAT"):
+                    dic = self.create_dictionary(msg)
+                    chat_msg = dic.get("Message", "")
+                    self.display_chat(f"YOU: {chat_msg}")
+                else:
+                    # 상대방의 move 처리
+                    self.process_game_message(msg)
+            except:
+                break
+
+
+    def display_chat(self, text):
+        self.chat_display.config(state='normal')
+        self.chat_display.insert(tk.END, text + "\n")
+        self.chat_display.config(state='disabled')
+        self.chat_display.see(tk.END)
+
     # create TicTacToe frame
     def create_control_frame(self):
         '''
@@ -128,7 +182,24 @@ class TTT(tk.Tk):
         self.b_debug.pack(side=tk.RIGHT)
         #^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
         
-    
+    # 게임 메시지 수신용
+    def process_game_message(self, msg):
+        dic = self.create_dictionary(msg)
+        if not check_msg(msg, self.recv_ip):
+            self.quit()
+            return
+        if "New-Move" in dic:
+            row = int(dic['New-Move'][1])
+            col = int(dic['New-Move'][3])
+            loc = row * 5 + col
+            ack_msg = f"ACK ETTTP/1.0\r\nHost:{self.send_ip}\r\nNew-Move:({row},{col})\r\n\r\n"
+            self.socket.send(ack_msg.encode())
+            self.update_board(self.computer, loc, get=True)
+            if self.state == self.active:
+                self.my_turn = 1
+                self.l_status_bullet.config(fg='green')
+                self.l_status['text'] = ['Ready']
+
     # create TicTacToe frame
     def create_board_frame(self):
         '''
@@ -146,7 +217,7 @@ class TTT(tk.Tk):
             self.setText[i] = tk.StringVar()
             self.setText[i].set("  ")
             self.cell[i] = tk.Label(self.board_frame, highlightthickness=1,borderwidth=5,relief='solid',
-                                    width=2, height=2,
+                                    width=2, height=1,
                                     bg=self.board_bg,compound="center",
                                     textvariable=self.setText[i],font=('Helevetica',30,'bold'))
             self.cell[i].bind('<Button-1>',
